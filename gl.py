@@ -7,7 +7,7 @@ import numpy as np
 from obj import Obj
 
 class Model(object):
-    def __init__(self, fileName, textureName):
+    def __init__(self, fileName, textureName, scale = glm.vec3(1, 1, 1)):
         self.model = Obj(fileName)
 
         self.createVertBuffer()
@@ -18,7 +18,7 @@ class Model(object):
 
         self.position = glm.vec3(0,0,0)
         self.rotation = glm.vec3(0,0,0) # pitch, yaw, roll
-        self.scale = glm.vec3(1,1,1)
+        self.scale = scale
 
     def getMatrix(self):
         i = glm.mat4(1)
@@ -52,7 +52,6 @@ class Model(object):
                 buffer.append(self.model.texcoords[face[i][1] - 1][1])
 
         self.vertBuffer = np.array( buffer, dtype=np.float32)
-
 
     def renderInScene(self):
 
@@ -96,6 +95,8 @@ class Renderer(object):
         self.temp = 0
 
         self.modelList = []
+
+        self.activeModel = 0
 
         # View Matrix
         self.camPosition = glm.vec3(0,0,0)
@@ -153,13 +154,15 @@ class Renderer(object):
             glUniform4f(glGetUniformLocation(self.active_shader, "color"), 
                         1, 1, 1, 1)
 
+            glUniform1f(glGetUniformLocation(self.active_shader, "ambient"), 0.5)
 
-        for model in self.modelList:
-            if self.active_shader:
-                glUniformMatrix4fv(glGetUniformLocation(self.active_shader, "model"),
-                                   1, GL_FALSE, glm.value_ptr( model.getMatrix() ))
 
-            model.renderInScene()
+        # for model in self.modelList:
+        if self.active_shader:
+            glUniformMatrix4fv(glGetUniformLocation(self.active_shader, "model"),
+                                1, GL_FALSE, glm.value_ptr( self.modelList[self.activeModel].getMatrix() ))
+
+        self.modelList[self.activeModel].renderInScene()
 
 
 

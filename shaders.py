@@ -12,6 +12,7 @@ uniform mat4 projection;
 
 uniform vec4 color;
 uniform vec4 light;
+uniform float ambient;
 
 out vec4 vertexColor;
 out vec2 vertexTexcoords;
@@ -21,7 +22,7 @@ void main()
     float intensity = dot(model * normal, normalize(light - pos));
 
     gl_Position = projection * view * model * pos;
-    vertexColor = color * intensity;
+    vertexColor = vec4(1, 1, 1, 1) * ambient + color * intensity;
     vertexTexcoords = texcoords;
 }
 """

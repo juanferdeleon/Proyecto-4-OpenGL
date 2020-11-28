@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 from gl import Renderer, Model
+import glm
 import shaders
 
 deltaTime = 0.0
@@ -19,9 +20,19 @@ r.pointLight.x = 5
 
 r.setShaders(shaders.vertex_shader, shaders.fragment_shader)
 
-r.modelList.append(Model('model.obj', 'model.bmp'))
+# Model 1: Face
+r.modelList.append(Model('./Models/model.obj', './Models/model.bmp', scale = glm.vec3(1, 1, 1)))
 
+# Model 2: Eye Ball
+r.modelList.append(Model('./Models/eyeball.obj', './Models/Eye_D.bmp', scale = glm.vec3(0.5, 0.5, 0.5)))
 
+# Model 3: Lolipop
+r.modelList.append(Model('./Models/pinwihell_lolipop.obj', './Models/Christmas Candy Caneeeeee_pinwihell_lolipop1_BaseColor.bmp', scale = glm.vec3(0.15, 0.15, 0.15)))
+r.modelList[2].position.y = -2
+
+# Model 4: Spider
+r.modelList.append(Model('./Models/Only_Spider_with_Animations_Export.obj', './Models/Spinnen_Bein_tex.bmp', scale = glm.vec3(0.01, 0.01, 0.01)))
+r.modelList[3].position.y = -0.5
 
 isPlaying = True
 while isPlaying:
@@ -51,6 +62,8 @@ while isPlaying:
                 r.wireframeMode()
             elif ev.key == pygame.K_ESCAPE:
                 isPlaying = False
+            elif ev.key == pygame.K_SPACE:
+                r.activeModel = (r.activeModel + 1) % len(r.modelList)
 
     # Main Renderer Loop
     r.render()
