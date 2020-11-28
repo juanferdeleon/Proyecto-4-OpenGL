@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from pygame import mixer
 
 from gl import Renderer, Model
 import glm
@@ -33,6 +34,9 @@ r.modelList[2].position.y = -2
 # Model 4: Spider
 r.modelList.append(Model('./Models/Only_Spider_with_Animations_Export.obj', './Models/Spinnen_Bein_tex.bmp', scale = glm.vec3(0.01, 0.01, 0.01)))
 r.modelList[3].position.y = -0.5
+
+mixer.music.load('./Music/24kGoldn - Mood ft. Iann Dior (Instrumental).mp3')
+mixer.music.play(-1)
 
 isPlaying = True
 while isPlaying:
