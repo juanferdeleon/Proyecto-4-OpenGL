@@ -19,3 +19,7 @@ Si lo ejecuta desde la linea de comandos:
 ```bash
 python RendererOpenGL.py
 ```
+
+## Uso del programa
+
+Para cambiar entre modelos presionar SPACE
